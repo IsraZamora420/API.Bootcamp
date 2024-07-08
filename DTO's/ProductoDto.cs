@@ -1,4 +1,6 @@
-﻿namespace EjemploEntity2.DTO_s
+﻿using System;
+
+namespace EjemploEntity2.DTO_s
 {
     public class ProductoDto
     {

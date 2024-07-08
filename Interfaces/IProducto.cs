@@ -1,5 +1,6 @@
 ﻿using EjemploEntity2.Model;
 using Microsoft.AspNetCore.Mvc;
+using System.Threading.Tasks;
 
 namespace EjemploEntity2.Interfaces
 {

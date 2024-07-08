@@ -1,4 +1,5 @@
 ﻿using EjemploEntity2.Model;
+using System.Threading.Tasks;
 
 namespace EjemploEntity2.Interfaces
 {

@@ -1,6 +1,8 @@
 ﻿using EjemploEntity2.Interfaces;
 using EjemploEntity2.Model;
 using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Threading.Tasks;
 
 namespace EjemploEntity2.Controllers
 {
@@ -16,12 +18,28 @@ namespace EjemploEntity2.Controllers
 
         [HttpGet]
         [Route ("GetVentas")]
-        public async Task<Respuesta> GetVentas(string? numFactura)
+        public async Task<Respuesta> GetVentas(string? numFactura, double precio, double vendedor, double clienteID)
         {
             var respuesta = new Respuesta();
             try
             {
-                respuesta = await _venta.GetVentas(numFactura);
+                respuesta = await _venta.GetVentas(numFactura, precio, vendedor, clienteID);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            return respuesta;
+        }
+        [HttpPut]
+        [Route("")]
+        public async Task<Respuesta> PostVenta(Venta venta)
+        {
+            var respuesta = new Respuesta();
+            try
+            {
+                respuesta = await _venta.PostVentas(venta);
             }
             catch (Exception)
             {

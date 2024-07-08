@@ -1,10 +1,8 @@
 ﻿using EjemploEntity2.DTO_s;
 using EjemploEntity2.Interfaces;
 using EjemploEntity2.Model;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Any;
+using System;
+using System.Threading.Tasks;
 
 namespace EjemploEntity2.Services
 {
