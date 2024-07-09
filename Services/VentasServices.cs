@@ -2,6 +2,7 @@
 using EjemploEntity2.Interfaces;
 using EjemploEntity2.Model;
 using EjemploEntity2.Utilities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
 using System.Threading.Tasks;
@@ -35,6 +36,7 @@ namespace EjemploEntity2.Services
                                                   join ct in _context.Categoria on v.CategId equals ct.CategId
                                                   join sc in _context.Sucursals on v.SucursalId equals sc.SucursalId
                                                   join ca in _context.Cajas on v.CajaId equals ca.CajaId
+                                                  join ma in _context.Marcas on v.MarcaId equals ma.MarcaId
                                                   join ve in _context.Vendedors on v.VendedorId equals ve.VendedorId
                                                   where v.IdFactura.Equals(numFactura)
                                                   select new VentaDTO
@@ -47,7 +49,7 @@ namespace EjemploEntity2.Services
                                                       ProductoNombre = pr.ProductoDescrip,
                                                       ModeloNombre = mo.ModeloDescripción,
                                                       CategNombre = ct.CategNombre,
-                                                      MarcaNombre = sc.MarcaNombre,
+                                                      MarcaNombre = ma.MarcaNombre,
                                                       SucursalNombre = sc.SucursalNombre,
                                                       CajaNombre = ca.CajaDescripcion,
                                                       VendedorId = v.VendedorId,
@@ -83,7 +85,7 @@ namespace EjemploEntity2.Services
                     }
 
 
-                    respuesta.Data = await query.TolistAsync();
+                    respuesta.Data = await query.ToListAsync();
                     respuesta.Mensaje = "Ok";
                     log.LogErrorMetodos("GetVentas", "prueba");
                 }
@@ -123,7 +125,7 @@ namespace EjemploEntity2.Services
 
             return respuesta;
         }
-        public async Task<Respuesta> PostVenta(Venta venta)
+        public async Task<Respuesta> PostVentas(Venta venta)
         {
             var respuesta = new Respuesta();
             try

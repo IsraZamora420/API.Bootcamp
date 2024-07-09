@@ -1,6 +1,7 @@
 ﻿using EjemploEntity2.DTO_s;
 using EjemploEntity2.Interfaces;
 using EjemploEntity2.Model;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Threading.Tasks;
 

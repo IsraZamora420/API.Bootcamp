@@ -33,7 +33,7 @@ namespace EjemploEntity2.Controllers
             return respuesta;
         }
         [HttpPut]
-        [Route("")]
+        [Route("PostVenta")]
         public async Task<Respuesta> PostVenta(Venta venta)
         {
             var respuesta = new Respuesta();
