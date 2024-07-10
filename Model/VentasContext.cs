@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 
 namespace EjemploEntity2.Model;
@@ -42,9 +43,10 @@ public partial class VentasContext : DbContext
     public virtual DbSet<Venta> Ventas { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=DESKTOP-J0UV241\\SQLEXPRESS;Database=VENTAS;Integrated Security=True;TrustServerCertificate=True");
 
+    {
+        //optionsBuilder.UseSqlServer("Server=ARTUROPC;Database=MASTERCLASS;Integrated Security=True;TrustServerCertificate=True");
+    }
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AS");
