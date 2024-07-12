@@ -1,6 +1,6 @@
-using EjemploEntity2.Interfaces;
-using EjemploEntity2.Model;
-using EjemploEntity2.Services;
+using EjemploEntity.Interfaces;
+using EjemploEntity.Models;
+using EjemploEntity.Services;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -10,7 +10,12 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
 builder.Services.AddScoped<IProducto, ProductoServices>();
-builder.Services.AddScoped<IVentas, VentasServicio>();
+builder.Services.AddScoped<ICatalogo, CatalogoService>();
+builder.Services.AddScoped<ICliente, ClienteService>();
+builder.Services.AddScoped<IVentas, VentasServices>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<VentasContext>(opciones =>
 opciones.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -18,11 +23,11 @@ opciones.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnecti
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
-//if (app.Environment.IsDevelopment())
-//{
-//    app.UseSwagger();
-//    app.UseSwaggerUI();
-//}
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
 
 app.UseAuthorization();
 

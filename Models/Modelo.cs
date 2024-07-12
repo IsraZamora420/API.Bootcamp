@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EjemploEntity2.Model;
+namespace EjemploEntity.Models;
 
-public partial class Marca
+public partial class Modelo
 {
-    public double MarcaId { get; set; }
+    public double ModeloId { get; set; }
 
-    public string? MarcaNombre { get; set; }
+    public string? ModeloDescripción { get; set; }
 
     public string? Estado { get; set; }
 

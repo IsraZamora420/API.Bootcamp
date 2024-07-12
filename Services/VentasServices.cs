@@ -1,139 +1,105 @@
-﻿using EjemploEntity2.DTO_s;
-using EjemploEntity2.Interfaces;
-using EjemploEntity2.Model;
-using EjemploEntity2.Utilities;
+﻿using EjemploEntity.DTOs;
+using EjemploEntity.Interfaces;
+using EjemploEntity.Models;
+using EjemploEntity.Utilitrios;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Linq;
-using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
-
-
-namespace EjemploEntity2.Services
+namespace EjemploEntity.Services
 {
-    public class VentasServicio : IVentas
+    public class VentasServices : IVentas
     {
-
         private readonly VentasContext _context;
-        private ControlError log = new ControlError();
+        private ControlError Log = new ControlError();
 
-        public VentasServicio(VentasContext context)
+        public VentasServices(VentasContext context)
         {
             this._context = context;
         }
 
-        public async Task<Respuesta> GetVentas(string? numFactura, double precio, double vendedor, double clienteID)
+        public async Task<Respuesta> GetVentas(string? numFactura, double precio, double vendedor, double clienteId)
         {
             var respuesta = new Respuesta();
             try
             {
+                respuesta.Cod = "000";
+                IQueryable<VentasDto> query = (from v in _context.Ventas
+                                               join cl in _context.Clientes on v.ClienteId equals cl.ClienteId
+                                               join p in _context.Productos on v.ProductoId equals p.ProductoId
+                                               join mo in _context.Modelos on v.ModeloId equals mo.ModeloId
+                                               join ca in _context.Categoria on v.CategId equals ca.CategId
+                                               join ma in _context.Marcas on v.MarcaId equals ma.MarcaId
+                                               join su in _context.Sucursals on v.SucursalId equals su.SucursalId
+                                               join cc in _context.Cajas on v.CajaId equals cc.CajaId
+                                               join vv in _context.Vendedors on v.VendedorId equals vv.VendedorId
+                                               select new VentasDto
+                                               {
+                                                   IdFactura = v.IdFactura,
+                                                   NumFact = v.NumFact,
+                                                   FechaHora = v.FechaHora,
+                                                   ClienteId = cl.ClienteId,
+                                                   ClienteNombre = cl.ClienteNombre,
+                                                   ProductoNombre = p.ProductoDescrip,
+                                                   ModeloNombre = mo.ModeloDescripción,
+                                                   CategNombre = ca.CategNombre,
+                                                   MarcaNombre = ma.MarcaNombre,
+                                                   SucursalNombre = su.SucursalNombre,
+                                                   CajaNombre = cc.CajaDescripcion,
+                                                   VendedorId = v.VendedorId,
+                                                   VendedorNombre = vv.VendedorDescripcion,
+                                                   Precio = v.Precio,
+                                                   Unidades = v.Unidades,
+                                                   Estado = v.Estado
+                                               });
+                if (numFactura != null && numFactura != "0" && precio == 0 && vendedor == 0 && clienteId == 0)
                 {
-                    respuesta.Cod = "000";
-                    IQueryable<VentaDTO> query = (from v in _context.Ventas
-                                                  join cl in _context.Clientes on v.ClienteId equals cl.ClienteId
-                                                  join pr in _context.Productos on v.ProductoId equals pr.ProductoId
-                                                  join mo in _context.Modelos on v.ModeloId equals mo.ModeloId
-                                                  join ct in _context.Categoria on v.CategId equals ct.CategId
-                                                  join sc in _context.Sucursals on v.SucursalId equals sc.SucursalId
-                                                  join ca in _context.Cajas on v.CajaId equals ca.CajaId
-                                                  join ma in _context.Marcas on v.MarcaId equals ma.MarcaId
-                                                  join ve in _context.Vendedors on v.VendedorId equals ve.VendedorId
-                                                  where v.IdFactura.Equals(numFactura)
-                                                  select new VentaDTO
-                                                  {
-                                                      IdFactura = v.IdFactura,
-                                                      NumFact = v.NumFact,
-                                                      FechaHora = v.FechaHora,
-                                                      ClienteId = v.ClienteId,
-                                                      ClienteNombre = cl.ClienteNombre,
-                                                      ProductoNombre = pr.ProductoDescrip,
-                                                      ModeloNombre = mo.ModeloDescripción,
-                                                      CategNombre = ct.CategNombre,
-                                                      MarcaNombre = ma.MarcaNombre,
-                                                      SucursalNombre = sc.SucursalNombre,
-                                                      CajaNombre = ca.CajaDescripcion,
-                                                      VendedorId = v.VendedorId,
-                                                      VendedorNombre = ve.VendedorDescripcion,
-                                                      Precio = v.Precio,
-                                                      Unidades = v.Unidades,
-                                                      Estado = v.Estado
-                                                  });
-                    if (!string.IsNullOrEmpty(numFactura) && numFactura != "0")
-                    {
-                        query = query.Where(n => n.NumFact == numFactura);
-                    }
-
-
-                    if (!string.IsNullOrEmpty(numFactura) && numFactura != "0" && precio != 0)
-                    {
-                        query = query.Where(n => n.NumFact == numFactura && n.Precio == precio);
-                    }
-
-                    if (precio != 0)
-                    {
-                        query = query.Where(n => n.Precio == precio);
-                    }
-
-                    if (vendedor != 0)
-                    {
-                        query = query.Where(n => n.VendedorId == vendedor);
-                    }
-
-                    if (clienteID != 0)
-                    {
-                        query = query.Where(n => n.ClienteId == clienteID);
-                    }
-
-
-                    respuesta.Data = await query.ToListAsync();
-                    respuesta.Mensaje = "Ok";
-                    log.LogErrorMetodos("GetVentas", "prueba");
+                    query = query.Where(n => n.NumFact == numFactura);
                 }
+                else if (numFactura != null && numFactura != "0" && precio != 0 && vendedor == 0 && clienteId == 0)
+                {
+                    query = query.Where(n => n.NumFact == numFactura && n.Precio == precio);
+                }
+                else if (precio != 0 && numFactura == null && numFactura == "0" && vendedor == 0 && clienteId == 0)
+                {
+                    query = query.Where(n => n.Precio == precio);
+                }
+                else if (vendedor != 0 && (numFactura == null || numFactura == "0") && precio == 0 && clienteId == 0)
+                {
+                    query = query.Where(n => n.VendedorId == vendedor);
+                }
+                else if (vendedor == 0 && (numFactura == null || numFactura == "0") && precio == 0 && clienteId != 0)
+                {
+                    query = query.Where(n => n.ClienteId == clienteId);
+                }
+                else if (clienteId != 0 && vendedor != 0 && (numFactura == null || numFactura == "0") && precio == 0)
+                {
+                    query = query.Where(n => n.ClienteId == clienteId && n.VendedorId == vendedor);
+                }
+                else if ((numFactura == null || numFactura == "0") && precio == 0 && vendedor == 0 && clienteId == 0)
+                {
+                    query = query.Where(n => n.NumFact == numFactura && n.Precio == precio && n.VendedorId == vendedor);
+                }
+                respuesta.Data = await query.ToListAsync();
+                respuesta.Mensaje = "Ok";
             }
             catch (Exception ee)
             {
                 respuesta.Cod = "000";
-                respuesta.Mensaje = $"Se presentó un error: {ee.Message}";
-                log.LogErrorMetodos(respuesta.Mensaje, ee.Message);
+                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el administrador del sistema";
+                Log.LogErrorMetodos("VentasServices", "GetVentas", ee.Message);
             }
-
             return respuesta;
         }
 
-        public async Task<Respuesta> GetVentaReporte()
+        public async Task<Respuesta> PostVenta(Venta venta)
         {
             var respuesta = new Respuesta();
             try
             {
-                respuesta.Cod = "000";
-
-                respuesta.Data = await _context.Ventas
-                    .Where(v => v.Precio > 100)
-                    .GroupBy(v => v.Precio)
-                    .Select(g => new
-                    {
-                        CantidadRegistro = g.Count(),
-                        ValorConsultado = g.Key
-                    }).ToListAsync();
-                respuesta.Mensaje = "OK";
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-                throw;
-            }
-
-            return respuesta;
-        }
-        public async Task<Respuesta> PostVentas(Venta venta)
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                var query = _context.Ventas.OrderByDescending(x => x.IdFactura).Select(x => x.IdFactura)
-                    .FirstOrDefault();
+                var query = _context.Ventas.OrderByDescending(x => x.IdFactura).Select(x => x.IdFactura).FirstOrDefault();
 
                 venta.IdFactura = Convert.ToInt32(query) + 1;
+                venta.FechaHora = DateTime.Now;
 
                 _context.Ventas.Add(venta);
                 await _context.SaveChangesAsync();
@@ -144,9 +110,54 @@ namespace EjemploEntity2.Services
             catch (Exception ex)
             {
                 respuesta.Cod = "000";
-                respuesta.Mensaje = $"Se ha generado una novedad , error {ex.Message}";
+                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el administrador del sistema";
+                Log.LogErrorMetodos("VentasServices", "PostVenta", ex.Message);
             }
+            return respuesta;
+        }
 
+        public async Task<Respuesta> PutVenta(Venta venta)
+        {
+            var respuesta = new Respuesta();
+            try
+            {
+                _context.Ventas.Add(venta);
+                await _context.SaveChangesAsync();
+
+                respuesta.Cod = "000";
+                respuesta.Mensaje = "Se insertó correctamente";
+            }
+            catch (Exception ex)
+            {
+                respuesta.Cod = "000";
+                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el administrador del sistema";
+                Log.LogErrorMetodos("VentasServices", "PutVenta", ex.Message);
+            }
+            return respuesta;
+        }
+
+        public async Task<Respuesta> GetVentaReporte()
+        {
+            var respuesta = new Respuesta();
+            try
+            {
+                respuesta.Cod = "000";
+                respuesta.Data = await _context.Ventas.
+                    Where(v => v.Precio > 100).
+                    GroupBy(v => v.Precio).
+                    Select(g => new
+                    {
+                        cant = g.Count(),
+                        valor = g.Key
+                    }).ToListAsync();
+                respuesta.Mensaje = "ok";
+            }
+            catch (Exception ee)
+            {
+                respuesta.Cod = "000";
+                respuesta.Mensaje = $"Se presentó una novedad, comunicarse con el administrador del sistema";
+                Log.LogErrorMetodos("VentasServices", "GetVentaReporte", ee.Message);
+            }
             return respuesta;
         }
     }

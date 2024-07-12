@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EjemploEntity2.Model;
+namespace EjemploEntity.Models;
 
-public partial class Categorium
+public partial class Marca
 {
-    public double CategId { get; set; }
+    public double MarcaId { get; set; }
 
-    public string? CategNombre { get; set; }
+    public string? MarcaNombre { get; set; }
 
     public string? Estado { get; set; }
 

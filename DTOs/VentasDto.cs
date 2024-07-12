@@ -1,11 +1,9 @@
-﻿using EjemploEntity2.Model;
-using System;
+﻿using EjemploEntity.Models;
 
-namespace EjemploEntity2.DTO_s
+namespace EjemploEntity.DTOs
 {
-    public class VentaDTO
+    public class VentasDto
     {
-
         public double IdFactura { get; set; }
 
         public string? NumFact { get; set; }
@@ -35,7 +33,6 @@ namespace EjemploEntity2.DTO_s
         public double? Unidades { get; set; }
 
         public int? Estado { get; set; }
+
     }
 }
-
- 

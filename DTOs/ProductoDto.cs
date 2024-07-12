@@ -1,6 +1,6 @@
-﻿using System;
+﻿using EjemploEntity.Models;
 
-namespace EjemploEntity2.DTO_s
+namespace EjemploEntity.DTOs
 {
     public class ProductoDto
     {
@@ -18,7 +18,7 @@ namespace EjemploEntity2.DTO_s
 
         public string? MarcaNombre { get; set; }
 
-        public string? ModeloNombre { get; set; }
+        public string? ModeloDescripción { get; set; }
 
     }
 }

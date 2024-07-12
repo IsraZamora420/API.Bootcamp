@@ -1,13 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EjemploEntity2.Model;
+namespace EjemploEntity.Models;
 
-public partial class Modelo
+public partial class Cliente
 {
-    public double ModeloId { get; set; }
+    public double ClienteId { get; set; }
 
-    public string? ModeloDescripción { get; set; }
+    public string? ClienteNombre { get; set; }
+
+    public double? Cedula { get; set; }
 
     public string? Estado { get; set; }
 

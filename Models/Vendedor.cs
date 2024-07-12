@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace EjemploEntity2.Model;
+namespace EjemploEntity.Models;
 
 public partial class Vendedor
 {

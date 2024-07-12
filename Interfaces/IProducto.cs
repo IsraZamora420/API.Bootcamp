@@ -1,14 +1,16 @@
-﻿using EjemploEntity2.Model;
+﻿using EjemploEntity.DTOs;
+using EjemploEntity.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
 
-namespace EjemploEntity2.Interfaces
+namespace EjemploEntity.Interfaces
 {
     public interface IProducto
     {
-        Task<Respuesta> GetListaProductos(int productoID, float precio);
+        Task<Respuesta> GetListaProductos(int productoID, decimal precio);
         Task<Respuesta> PostProducto(Producto producto);
+        Task<Respuesta> PostEjemplo(Ejemplo ejemplo);
         Task<Respuesta> PutProducto(Producto producto);
-    }
-}
 
+    }
+    
+}

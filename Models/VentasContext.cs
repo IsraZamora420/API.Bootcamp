@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using Microsoft.EntityFrameworkCore;
 
-namespace EjemploEntity2.Model;
+namespace EjemploEntity.Models;
 
 public partial class VentasContext : DbContext
 {
@@ -43,14 +42,12 @@ public partial class VentasContext : DbContext
     public virtual DbSet<Venta> Ventas { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-
     {
-        //optionsBuilder.UseSqlServer("Server=ARTUROPC;Database=MASTERCLASS;Integrated Security=True;TrustServerCertificate=True");
+        //optionsBuilder.UseSqlServer("Server=ASUSGIGI\\SQLEXPRESS;Database=VENTAS;Integrated Security=True;TrustServerCertificate=True");
     }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.UseCollation("SQL_Latin1_General_CP1_CI_AS");
-
         modelBuilder.Entity<Caja>(entity =>
         {
             entity.ToTable("CAJA");

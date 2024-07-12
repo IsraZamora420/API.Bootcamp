@@ -1,6 +1,4 @@
-using System;
-
-namespace EjemploEntity2
+namespace EjemploEntity
 {
     public class WeatherForecast
     {

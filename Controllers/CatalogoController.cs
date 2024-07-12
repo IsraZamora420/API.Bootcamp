@@ -1,16 +1,16 @@
-﻿using EjemploEntity2.Interfaces;
-using EjemploEntity2.Model;
+﻿using EjemploEntity.Interfaces;
+using EjemploEntity.Models;
+using EjemploEntity.Utilitrios;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
-namespace EjemploEntity2.Controllers
+namespace EjemploEntity.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class CatalogoController : Controller
     {
         private readonly ICatalogo _catalogo;
+        private ControlError Log = new ControlError();
 
         public CatalogoController(ICatalogo catalogo)
         {
@@ -26,10 +26,9 @@ namespace EjemploEntity2.Controllers
             {
                 respuesta = await _catalogo.GetCategoria();
             }
-            catch (Exception)
+            catch (Exception ee)
             {
-
-                throw;
+                Log.LogErrorMetodos("CatalogoController", "GetCategoria", ee.Message);
             }
             return respuesta;
         }
@@ -43,10 +42,9 @@ namespace EjemploEntity2.Controllers
             {
                 respuesta = await _catalogo.GetMarca();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Log.LogErrorMetodos("CatalogoController", "GetMarca", ex.Message);
             }
             return respuesta;
         }
@@ -60,27 +58,9 @@ namespace EjemploEntity2.Controllers
             {
                 respuesta = await _catalogo.GetModelo();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
-            }
-            return respuesta;
-        }
-
-        [HttpGet]
-        [Route("GetSucursal")]
-        public async Task<Respuesta> GetSucursal()
-        {
-            var respuesta = new Respuesta();
-            try
-            {
-                respuesta = await _catalogo.GetSucursal();
-            }
-            catch (Exception)
-            {
-
-                throw;
+                Log.LogErrorMetodos("CatalogoController", "GetModelo", ex.Message);
             }
             return respuesta;
         }

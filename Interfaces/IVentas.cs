@@ -1,13 +1,13 @@
-﻿using EjemploEntity2.Model;
-using System.Threading.Tasks;
+﻿using EjemploEntity.Models;
 
-namespace EjemploEntity2.Interfaces
+namespace EjemploEntity.Interfaces
 {
     public interface IVentas
     {
         Task<Respuesta> GetVentas(string? numFactura, double precio, double vendedor, double clienteId);
-        Task<Respuesta> PostVentas(Venta venta);
-        Task<Respuesta> GetVentaReporte();
 
+        Task<Respuesta> PostVenta(Venta venta);
+        Task<Respuesta> PutVenta(Venta venta);
+        Task<Respuesta> GetVentaReporte();
     }
 }

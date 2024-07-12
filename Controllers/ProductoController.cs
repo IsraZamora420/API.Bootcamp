@@ -1,16 +1,16 @@
-﻿using EjemploEntity2.Interfaces;
-using EjemploEntity2.Model;
+﻿using EjemploEntity.Interfaces;
+using EjemploEntity.Models;
+using EjemploEntity.Utilitrios;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Threading.Tasks;
 
-namespace EjemploEntity2.Controllers
+namespace EjemploEntity.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class ProductoController : Controller
     {
         private readonly IProducto _producto;
+        private ControlError Log = new ControlError();
 
         public ProductoController(IProducto producto)
         {
@@ -19,19 +19,17 @@ namespace EjemploEntity2.Controllers
 
         [HttpGet]
         [Route("GetListaProductos")]
-        public async Task<Respuesta> GetListaProductos(int productoID, float precio)
+        public async Task<Respuesta> GetListaProductos(int productoID, decimal precio)
         {
             var respuesta = new Respuesta();
             try
             {
                 respuesta = await _producto.GetListaProductos(productoID, precio);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Log.LogErrorMetodos("ProductoController", "GetListaProductos", ex.Message);
             }
-
             return respuesta;
         }
 
@@ -44,12 +42,26 @@ namespace EjemploEntity2.Controllers
             {
                 respuesta = await _producto.PostProducto(producto);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Log.LogErrorMetodos("ProductoController", "PostProducto", ex.Message);
             }
+            return respuesta;
+        }
 
+        [HttpPost]
+        [Route("PostEjemplo")]
+        public async Task<Respuesta> PostEjemplo([FromBody] Ejemplo ejemplo)
+        {
+            var respuesta = new Respuesta();
+            try
+            {
+                respuesta = await _producto.PostEjemplo(ejemplo);
+            }
+            catch (Exception ex)
+            {
+                Log.LogErrorMetodos("ProductoController", "PostEjemplo", ex.Message);
+            }
             return respuesta;
         }
 
@@ -62,12 +74,12 @@ namespace EjemploEntity2.Controllers
             {
                 respuesta = await _producto.PutProducto(producto);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
-                throw;
+                Log.LogErrorMetodos("ProductoController", "PutProducto", ex.Message);
             }
             return respuesta;
         }
+
     }
 }
