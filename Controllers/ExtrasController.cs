@@ -11,6 +11,7 @@ namespace EjemploEntity.Controllers
         private ControlError log = new ControlError();
         private readonly IConfiguration _configuration;
         private PokeApi pokeApi = new PokeApi();
+        private ChuckNorrisApi chuckNorrisApi = new ChuckNorrisApi(); 
         public ExtrasController(IConfiguration configuration)
         {
             this._configuration = configuration;
@@ -33,6 +34,27 @@ namespace EjemploEntity.Controllers
             {
 
                 log.LogErrorMetodos("ExtrasController", "GetPokeApi", Ex.Message);
+            }
+            return respuesta;
+        }
+
+        [HttpGet]
+        [Route("GetChuckNorrisApi")]
+        public async Task<Respuesta> GetChuckNorrisApi()
+        {
+            var respuesta = new Respuesta();
+            try
+            {
+                var url = _configuration.GetSection("Key:UrlChuckNorrisApi").Value!;
+
+                respuesta.Cod = "000";
+                respuesta.Data = await chuckNorrisApi.GetChuckNorrisApi(url);
+                respuesta.Mensaje = "OK";
+            }
+            catch (Exception Ex)
+            {
+
+                log.LogErrorMetodos("ExtrasController", "GetChuckNorrisApi", Ex.Message);
             }
             return respuesta;
         }
