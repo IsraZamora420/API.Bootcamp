@@ -58,7 +58,75 @@ namespace EjemploEntity.Controllers
             }
             return respuesta;
         }
+        [HttpGet]
+        [Route("GetChuckNorrisApiCategory")]
+        public async Task<Respuesta> GetChuckNorrisApiCategory(string categoria)
+        {
+            var respuesta = new Respuesta();
+            try
+            {
+                if (categoria == null || categoria == "0")
+                {
+                    respuesta.Data = "Ingrese la información correcta a consultar.";
+                }
+                else if (categoria != null || categoria != "0")
+                {
+                    var urlSetting = _configuration.GetSection("Key:UrlChuckNorrisApiCategory").Value;
+                    var url = urlSetting + categoria;
+                    respuesta.Data = await chuckNorrisApi.GetChuckNorrisApiCategory(url);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.LogErrorMetodos("ChuckNorrisApi", "GetChuckNorrisApiCategory", ex.Message);
+            }
+            return respuesta;
+        }
+
+        [HttpGet]
+        [Route("GetChuckNorrisApiRandom")]
+        public async Task<Respuesta> GetChuckNorrisApiRandom()
+        {
+            var respuesta = new Respuesta();
+            try
+            {
+                var url = _configuration.GetSection("Key:UrlChuckNorrisApiRandom").Value;
+
+                respuesta.Data = await chuckNorrisApi.GetChuckNorrisApiRandom(url);
+            }
+            catch (Exception ex)
+            {
+                log.LogErrorMetodos("ChuckNorrisApi", "GetChuckNorrisApiRandom", ex.Message);
+            }
+            return respuesta;
+        }
+
+        [HttpGet]
+        [Route("GetChuckNorrisApiTexto")]
+        public async Task<Respuesta> GetChuckNorrisApiTexto(string texto)
+        {
+            var respuesta = new Respuesta();
+            try
+            {
+                if (texto == null || texto == "0")
+                {
+                    respuesta.Data = "Ingrese la información correcta a consultar.";
+                }
+                else if (texto != null || texto != "0")
+                {
+                    var urlSetting = _configuration.GetSection("Key:UrlChuckNorrisApiTextoLibre").Value;
+                    var url = urlSetting + texto;
+                    respuesta.Data = await chuckNorrisApi.GetChuckNorrisApiTexto(url);
+                }
+            }
+            catch (Exception ex)
+            {
+                log.LogErrorMetodos("ChuckNorrisApi", "UrlChuckNorrisApiTextoLibre", ex.Message);
+            }
+            return respuesta;
+        }
     }
 }
+   
 
 
